@@ -46,7 +46,7 @@ from skimage.filters import threshold_multiotsu
 from scipy.ndimage import gaussian_filter, binary_dilation, label
 from scipy.stats import multivariate_normal
 from scipy.optimize import minimize
-
+from matplotlib.ticker import FormatStrFormatter  # Import the formatter
 
 # Suppress warnings and reset matplotlib parameters
 warnings.filterwarnings("ignore")
@@ -109,9 +109,9 @@ src_dir = next((parent / 'src' for parent in Path().absolute().parents if (paren
 if src_dir is not None:
     sys.path.append(str(src_dir))
     # Import custom modules
-    import qbio_paper as qbio
+    #import qbio_paper as qbio
     # Reload custom modules
-    importlib.reload(qbio)
+    #importlib.reload(qbio)
 else:
     print("Source directory not found. Please check the path to 'src' directory.")
 

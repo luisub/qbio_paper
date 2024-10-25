@@ -23,7 +23,7 @@ rm -f output.txt
 # ########### PROGRAM ARGUMENTS #############################
 # Paths with configuration files
 path_to_executable="${PROJECT_ROOT_DIR}/notebooks/parameter_estimation_constitutive.py"
-chain_length=2200000
+chain_length=1100000
 
 # Run the Python script with nohup using 'python' from the activated environment
 nohup python "$path_to_executable" $chain_length > output.txt 2>&1 &

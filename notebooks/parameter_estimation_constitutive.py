@@ -12,7 +12,7 @@ from imports import *
 current_dir = Path().resolve()
 
 # Directory Setup
-folder_outputs = current_dir.joinpath('Figures_Exercise_Constitutive_sem_200k')
+folder_outputs = current_dir.joinpath('Figures_Exercise_Constitutive_sem_1M')
 
 folder_outputs.mkdir(parents=True, exist_ok=True)
 # Plotting configuration
@@ -20,6 +20,13 @@ plt.rcParams.update({ 'axes.labelsize': 14, 'axes.titlesize': 14, 'xtick.labelsi
 colors = ['#FBD148', '#6BCB77', '#AA66CC', '#FF6B6B', '#4D96FF']
 species_colors = { 'R_n': colors[2], 'R_c': colors[3], 'P': colors[4]}
 
+
+# Loading observable data
+folder_simulated_data = current_dir.joinpath('simulated_data')
+simulated_time_points = np.load(folder_simulated_data.joinpath('time_points_snapshots_image.npy'))
+simulated_data_protein = np.load(folder_simulated_data.joinpath('snapshots_total_Protein_image.npy'))
+simulated_data_Rn = np.load(folder_simulated_data.joinpath('snapshots_RNA_nucleus_image.npy'))
+simulated_data_Rc = np.load(folder_simulated_data.joinpath('snapshots_RNA_cytosol_image.npy'))
 
 try:
     chain_length = int(sys.argv[1])
@@ -29,7 +36,6 @@ except:
     run_ms = False
 min_value_parameters = 0.0001
 max_value_parameters = 100                          
-#max_allowed_value_variables = 2000
 
 # Parameters for the model
 #k_on = 1.2
@@ -65,7 +71,7 @@ parameter_symbols = [
 ]
 
 true_parameter_values = [k_r, kt, k_p, gamma_r, gamma_p, inhibition_constant]
-time_points = np.linspace(5, total_simulation_time, 6).astype(int) # np.array([5,10,20,40,60,80,100,130,150,200]).astype(int)
+time_points = simulated_time_points # np.linspace(5, total_simulation_time, 6).astype(int) # np.array([5,10,20,40,60,80,100,130,150,200]).astype(int)
 number_parameters = len(true_parameter_values)
 
 
@@ -120,7 +126,7 @@ def adaptive_metropolis(log_target_pdf, start, chain_len, initial_scale=1.0, rng
     nacc = 0
     # Initial larger covariance matrix for broader exploration
     cov_matrix = initial_scale * np.eye(pdim)
-    print_freq=1000
+    print_freq=10000
     pbar = tqdm(total=chain_len)
     for i in range(1, chain_len):
         xpropose = rng.multivariate_normal(samples[i-1, :], cov_matrix)
@@ -144,12 +150,7 @@ def adaptive_metropolis(log_target_pdf, start, chain_len, initial_scale=1.0, rng
 
 
 
-# Loading observable data
-folder_simulated_data = current_dir.joinpath('simulated_data')
-simulated_time_points = np.load(folder_simulated_data.joinpath('time_points_snapshots_image.npy'))
-simulated_data_protein = np.load(folder_simulated_data.joinpath('snapshots_total_Protein_image.npy'))
-simulated_data_Rn = np.load(folder_simulated_data.joinpath('snapshots_RNA_nucleus_image.npy'))
-simulated_data_Rc = np.load(folder_simulated_data.joinpath('snapshots_RNA_cytosol_image.npy'))
+
 
 # normalize the protein concentration  min max and then 0 to 1
 #simulated_data_protein = (simulated_data_protein - simulated_data_protein.min()) / (simulated_data_protein.max() - simulated_data_protein.min())
@@ -293,6 +294,7 @@ plt.close()
 
 
 
+
 # Set the style
 sns.set(style="white")
 # Enable LaTeX in matplotlib
@@ -303,6 +305,7 @@ for i in range(number_parameters):
     for j in range(i):
         axs[i, j].hexbin(chain_trunc[:, j], chain_trunc[:, i], gridsize=30, cmap='plasma', mincnt=1)
         axs[i, j].tick_params(axis='both', which='major', labelsize=12)
+        axs[i, j].xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
         if j == 0:
             # Use LaTeX for y-labels
             axs[i, j].set_ylabel(parameter_symbols[i], fontsize=20)
@@ -316,6 +319,7 @@ for i in range(number_parameters):
     # Use scientific notation for y-axis
     axs[i, i].yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
     axs[i, i].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    axs[i, i].xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 # Save the figure
 fig.savefig(folder_outputs.joinpath("mcmc_2D.jpg"), dpi=300, bbox_inches="tight")
 plt.show()
