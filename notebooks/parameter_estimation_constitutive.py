@@ -305,7 +305,7 @@ for i in range(number_parameters):
     for j in range(i):
         axs[i, j].hexbin(chain_trunc[:, j], chain_trunc[:, i], gridsize=30, cmap='plasma', mincnt=1)
         axs[i, j].tick_params(axis='both', which='major', labelsize=12)
-        axs[i, j].xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+        axs[i, j].xaxis.set_major_formatter(FormatStrFormatter('%.3f'))
         if j == 0:
             # Use LaTeX for y-labels
             axs[i, j].set_ylabel(parameter_symbols[i], fontsize=20)
@@ -319,7 +319,7 @@ for i in range(number_parameters):
     # Use scientific notation for y-axis
     axs[i, i].yaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
     axs[i, i].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-    axs[i, i].xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    axs[i, i].xaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 # Save the figure
 fig.savefig(folder_outputs.joinpath("mcmc_2D.jpg"), dpi=300, bbox_inches="tight")
 plt.show()
