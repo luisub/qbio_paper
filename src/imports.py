@@ -1255,6 +1255,9 @@ def cell_segmentation (image, sigma=10):
     # Extract masks for nucleus and cytosol
     nucleus_mask_segmented = regions == 2
     cytosol_mask_segmented = regions == 1
+    #nucleus_mask_segmented = binary_dilation(nucleus_mask_segmented, iterations=2)
+    # remove the overlaping region between the nucleus and the cytosol
+    #cytosol_mask_segmented = cytosol_mask_segmented & ~nucleus_mask_segmented
     cytosol_mask_segmented = binary_dilation(cytosol_mask_segmented, iterations=1)
     return nucleus_mask_segmented, cytosol_mask_segmented
 

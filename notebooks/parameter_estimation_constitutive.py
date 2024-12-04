@@ -42,9 +42,16 @@ max_value_parameters = 100
 #k_off = 0
 k_r = 3
 k_p = 0.9
-gamma_r = 0.05  # assuming gamma_rn = gamma_rc
-gamma_p = 0.65
+# gamma_r = 0.05  # assuming gamma_rn = gamma_rc
+# gamma_p = 0.65
+
+gamma_r = 0.08 #0.05 # assuming gamma_rn = gamma_rc
+gamma_p = 0.45  # 0.65
+
 transport_rate = 1
+
+
+
 diffusion_rate = 10  # assuming diffusion_rate_r = diffusion_rate_p
 total_simulation_time = 200
 nucleus_diameter = 60
@@ -55,7 +62,7 @@ inhibition_constant = 0.1
 drug_application_time = 120
 kt = calculate_effective_kt(D=nucleus_diameter, k_diff_r=diffusion_rate, transport_rate=transport_rate, model_type=model_type)
 print('Effective transport rate: ', kt)
-max_y_val = 65
+max_y_val = 45 #65
 parameter_values = {'k_r': k_r, 'k_t': kt, 'k_p': k_p, 'gamma_r': gamma_r, 'gamma_p': gamma_p}
 initial_conditions = { 'R_n': 0, 'R_c': 0, 'P': 0}
 # Updating parameter values
@@ -99,13 +106,8 @@ def Loglikelihood(parameters, observations_data_mean, observations_data_sem, dru
         if time_points is not None:
             y_R_n = concentrations_species['R_n'][time_points]
             y_R_c = concentrations_species['R_c'][time_points]
-            #y_P_max = np.max(concentrations_species['P'])
-            #y_P_min = np.min(concentrations_species['P'] )
             y_P = concentrations_species['P'][time_points]
-            #y_P = (y_P - y_P_min) / (y_P_max - y_P_min)
-            #print('y_P_max:', y_P_max, 'y_P_min:', y_P_min)
             loglikelihood = 0.0
-            #weights_protein = 10
             for i in range(len(observations_data_mean[0])):  # Assuming observations[0] is correctly indexed
                 loglikelihood -= (np.sum(observations_data_mean[0][i]) - y_P[i] )**2 / (2 * observations_data_sem[0][i]**2)
                 loglikelihood -= (np.sum(observations_data_mean[1][i]) - y_R_n[i])**2 / (2 * observations_data_sem[1][i]**2)
@@ -174,7 +176,9 @@ def bg_prior_sample(n_sample: int, rng=np.random.default_rng()) -> np.ndarray:
     while True:
         prior_sample = rng.normal(loc=BG_MU, scale=BG_SIGMA, size=(n_sample, BG_MU.shape[0]))
         transformed_sample = 10.0**prior_sample[0,:]
-        if np.all(transformed_sample >= min_value_parameters) and np.all(transformed_sample <= max_value_parameters) and (transformed_sample[-1]<1):
+        #if np.all(transformed_sample >= min_value_parameters) and np.all(transformed_sample <= max_value_parameters) and (transformed_sample[-1]<1):
+        if np.all(transformed_sample >= min_value_parameters) and np.all(transformed_sample <= max_value_parameters) :
+
             return prior_sample
 chain_start =  bg_prior_sample(1)[0]
 print('Initial guess:', 10.0**chain_start)
@@ -495,7 +499,7 @@ plotting_stochastic(time_ssa,
                     trajectories_species_ssa,
                     species_colors,
                     drug_application_time,
-                    ylim_val=70,
+                    ylim_val=max_y_val,
                     time_points=time_points, 
                     observations_data_mean=observations_data_mean,
                     observations_data_sem=observations_data_sem )
