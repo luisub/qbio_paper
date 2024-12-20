@@ -1,17 +1,16 @@
 # UQ Bio Paper
 
-**Author:** Luis Aguilera
-
-[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
 ---
+
 
 ## 📜 Description
 
 <div style="display: flex; align-items: center;">
     <img src="docs/uqbio_2024_logo.png" alt="UQ Bio Logo" style="width: 200px; margin-right: 20px;">
     <div>
-        This repository contains the code required to reproduce the figures and analyses presented in the UQ Bio paper.
+        This repository contains the code required to reproduce the figures and analyses presented in the paper:
+        <em>"Methods in Quantitative Biology &mdash; from Analysis of Single-Cell Microscopy Images to Inference of Predictive Models for Stochastic Gene Expression"</em> 
+        by Luis U. Aguilera, Lisa Weber, Eric Ron, Connor R. King, Kaan &Ouml;cal, Alexandra Popinga, Joshua Cook, Michael P. May, William Raymond, Linda S. Forero-Quintero, Zachary R. Fox, Brian Munsky.
     </div>
 </div>
 
