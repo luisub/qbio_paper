@@ -46,7 +46,7 @@ A constitutive model is defined as follows:
 
 | Index | Reaction                                | Description                       | Reaction Rate               |
 |-------|------------------------------------------|-----------------------------------|-----------------------------|
-| $r_1$ | $ \xrightarrow[]{k_{r}} R_{n}$           | Active gene produces mRNA          | $k_{r}$                     |
+| $r_1$ | $\xrightarrow[]{k_{r}} R_{n}$           | Active gene produces mRNA          | $k_{r}$                     |
 | $r_2$ | $R_{n} \xrightarrow[]{k_{t}} R_{c}$      | mRNA transport to cytoplasm        | $k_{t} \cdot [R_{n}]$       |
 | $r_3$ | $R_{c} \xrightarrow[]{k_{p}} R_{c} + P$  | Cytoplasmic mRNA produces protein  | $k_{p} \cdot [R_{c}]$       |
 | $r_4$ | $R_{n} \xrightarrow[]{\gamma_{r}} \phi$  | Nuclear mRNA decay                 | $\gamma_{r} \cdot [R_{n}]$  |
