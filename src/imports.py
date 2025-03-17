@@ -67,22 +67,22 @@ def create_output_folder(folder_name):
 
 figSize=800
 
-plt.rcParams.update({
-    'axes.labelsize': 14,
-    'axes.titlesize': 14,
-    'xtick.labelsize': 14,
-    'ytick.labelsize': 14,
-    'legend.fontsize': 10,
-})
-# Assign colors to each species for plotting
-colors = [ '#FBD148', '#6BCB77', '#AA66CC','#FF6B6B', '#4D96FF']
-species_colors = {
-    'G_off': colors[0],
-    'G_on': colors[1],
-    'R_n': colors[2],
-    'R_c': colors[3],
-    'P':  colors[4]
-}
+# plt.rcParams.update({
+#     'axes.labelsize': 14,
+#     'axes.titlesize': 14,
+#     'xtick.labelsize': 14,
+#     'ytick.labelsize': 14,
+#     'legend.fontsize': 10,
+# })
+# # Assign colors to each species for plotting
+# colors = [ '#FBD148', '#6BCB77', '#AA66CC','#FF6B6B', '#4D96FF']
+# species_colors = {
+#     'G_off': colors[0],
+#     'G_on': colors[1],
+#     'R_n': colors[2],
+#     'R_c': colors[3],
+#     'P':  colors[4]
+# }
 
 
 #@title Plotting configuration
@@ -108,31 +108,9 @@ species_colors = {
 src_dir = next((parent / 'src' for parent in Path().absolute().parents if (parent / 'src').is_dir()), None)
 if src_dir is not None:
     sys.path.append(str(src_dir))
-    # Import custom modules
-    #import qbio_paper as qbio
-    # Reload custom modules
-    #importlib.reload(qbio)
 else:
     print("Source directory not found. Please check the path to 'src' directory.")
 
-
-
-# def plotting_deterministic(time,concentrations_species,species_colors,drug_application_time=None,ylim_val=False,save_figure=True,plot_name='det.jpg'):
-#     plt.figure(figsize=(8, 4))
-#     for species, color in species_colors.items():
-#         plt.plot(time, concentrations_species[species], color=color, label=species,lw=4)
-#     if not drug_application_time is None:
-#         plt.axvline(x=drug_application_time, color='k', linestyle='--', label= r'$t_{drug}$',lw=1.5)
-#     plt.xlabel('Time')
-#     plt.ylabel('Concentration')
-#     plt.title('Deterministic Dynamics')
-#     plt.legend(loc='upper right')
-#     plt.grid(True, linestyle='--', alpha=0.7)
-#     if ylim_val:
-#         plt.ylim(0,ylim_val)
-#     if save_figure == True: 
-#         plt.savefig(folder_outputs.joinpath(plot_name), dpi=300, bbox_inches='tight', transparent=True, pad_inches=0.1)  
-#     plt.show()
 
 
 def plotting_deterministic(time, concentrations_species, species_colors, drug_application_time=None, ylim_val=False, save_figure=True, plot_name='det.jpg',folder_outputs=None):
@@ -453,16 +431,12 @@ def calculate_effective_kt(D, k_diff_r, transport_rate, model_type):
         T_diff = D**2 / (6 * k_diff_r)  # Adjusted for 3D
     else:
         raise ValueError("Dimension must be 2 or 3.")
-
     # Calculate T_transport as the inverse of transport_rate
     T_transport = 1 / transport_rate
-    
     # Calculate the total effective time (T_total)
     T_total = T_diff + T_transport
-    
     # Calculate the effective rate (k_t) as the inverse of T_total
     k_t = 1 / T_total
-    
     return k_t
 
 
@@ -1050,61 +1024,6 @@ def get_counts(trajectories):
 
 
 
-
-# def plot_distribution(data_arrays, time_points, bin_min, bin_max, n_bins, list_colors, super_titles=None, drug_application_time=None,folder_outputs=None):
-#     """
-#     Plots the distribution of protein levels at specified time points for multiple datasets and
-#     displays a larger summary plot showing mean and standard deviation below all histograms.
-
-#     Parameters:
-#     - data_arrays: list of numpy.ndarray, each 2D array where columns represent different time points.
-#     - time_points: list or array of integers, each corresponding to a column in each data array.
-#     - bin_min: float, minimum value for the histogram bins.
-#     - bin_max: float, maximum value for the histogram bins.
-#     - n_bins: int, number of bins in the histogram.
-#     - list_colors: list of str, colors for the histogram bars for each dataset.
-#     - super_titles: list of str, titles for each row of plots.
-#     """
-#     n_rows = len(data_arrays)
-#     n_cols = len(time_points)
-#     species =['R_n', 'R_c','P' ]
-#     # Setup the figure and axes grid
-#     fig = plt.figure(figsize=(30, 4 * n_rows))  # Adjusted height for additional plot at the bottom
-#     grid = plt.GridSpec(n_rows + 1, n_cols, figure=fig)  # Add an extra row for the summary plot
-#     def bins_histogram(data):
-#         if data.max() > 60:
-#             step_bins =2
-#         else:
-#             step_bins=1
-#         bins = np.arange(np.floor(data.min()), np.ceil(data.max()), step_bins)
-#         return bins
-#     # Plot histograms
-#     axes = []  # Store axes for modifying layout later if needed
-#     for row, data in enumerate(data_arrays):
-#         row_axes = []
-#         for col, time in enumerate(time_points):
-#             ax = fig.add_subplot(grid[row, col])
-#             # Select the column of data corresponding to the current time point
-#             data_at_time = data[:, time]
-#             bins = bins_histogram(data_at_time)
-#             # Create histogram
-#             ax.hist(data_at_time, bins=bins, color=list_colors[row]) # np.linspace(bin_min, bin_max, n_bins)
-#             # Set title for each subplot
-#             if row==0:
-#                 ax.set_title(f'{time} sec', fontsize=16)
-#             if col == 0:
-#                 ax.set_ylabel('Frequency ('+f"${species[row]}$" +')', fontsize=16 )
-#             row_axes.append(ax)
-#             if row == len(data_arrays) - 1:
-#                 ax.set_xlabel('Counts', fontsize=16)
-#         axes.append(row_axes)
-
-#     plot_name = 'snapshots_simulated_data.jpg'
-#     if folder_outputs is not None:
-#         plt.savefig(folder_outputs.joinpath(plot_name), dpi=200, bbox_inches='tight', transparent=False, pad_inches=0.5)
-#     else:
-#         plt.savefig(folder_outputs.joinpath(plot_name), dpi=200, bbox_inches='tight', transparent=False, pad_inches=0.5)  
-#     plt.show()
 
 def plot_distribution(data_arrays, time_points, bin_min, bin_max, n_bins, list_colors, super_titles=None, drug_application_time=None, folder_outputs=None):
     """
