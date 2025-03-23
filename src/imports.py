@@ -1058,7 +1058,7 @@ def plot_distribution(data_arrays, time_points, bin_min, bin_max, n_bins, list_c
             ax.hist(data_at_time, bins=bins, color=list_colors[row], edgecolor='black')
             # Set title and labels
             if row == 0:
-                ax.set_title(f'{time} sec', fontsize=font_size)
+                ax.set_title(f'{time} ', fontsize=font_size)
             if col == 0:
                 ax.set_ylabel(f'Frequency (${species[row]}$)', fontsize=font_size)
             if row == n_rows - 1:
