@@ -10,7 +10,8 @@
     <div>
         This repository contains the code required to reproduce the figures and analyses presented in the paper:
         <em>"Methods in Quantitative Biology &mdash; from Analysis of Single-Cell Microscopy Images to Inference of Predictive Models for Stochastic Gene Expression"</em> 
-        by Luis U. Aguilera, Lisa Weber, Eric Ron, Connor R. King, Kaan &Ouml;cal, Alexandra Popinga, Joshua Cook, Michael P. May, William Raymond, Linda S. Forero-Quintero, Zachary R. Fox, Brian Munsky.
+        by 
+        Luis U. Aguilera, Lisa M. Weber, Eric Ron, Connor R. King, Kaan &Ouml;cal, Alex Popinga, Joshua Cook,  Michael P. May, William S. Raymond,  Zachary R. Fox, Linda S. Forero-Quintero, Jack R. Forman, Alexandre David,  Brian Munsky
     </div>
 </div>
 
@@ -134,6 +135,8 @@ inhibited_parameters = {              # Parameters to inhibit and their scaled v
 position_TS = 'random'                # Position of the transcription site (e.g., 'random' or specific coordinates)
 
 ```
+
+* Note that for different examples in the paper, additional parameter values combinations are provided in the notebooks and in the paper's main text.
 
 By following this approach, you can simulate diverse perturbations and study their effects on the system.
 
